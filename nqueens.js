@@ -2,7 +2,7 @@
  * Created by Linh Ngo in 8/3/2017
  */
 
-/* Function to check contraints
+/* Function to check constraints
  * @param: rows : check through all rows from 0 to rows - 1
  * @param: column = j in main function eachRow()
  * @param: solution is an array where index is the row and
@@ -10,7 +10,7 @@
  * @return: True if in column j, no queen is placed from 0 to rows - 1  
  * */
 // each solution is an array
-const meetContraints = (rows, column, solution) => {
+const meetConstraints = (rows, column, solution) => {
     for (let i = 0; i < rows; i++) {
         if (solution[i] === column ||
             Math.abs(column - solution[i]) === Math.abs(rows - i)) {
@@ -38,7 +38,7 @@ const eachRow = (row, columns, prevSolutions) => {
         //loop through n columns
         for (let j = 0; j < columns; j++) {
             //check if possible to place a queen in column j
-            if (meetContraints(row, j, solution)) {
+            if (meetConstraints(row, j, solution)) {
                 // can place a queen at column j 
                 newSolutions.push(solution.concat([j]));
             }
@@ -182,18 +182,18 @@ const getSol = () => {
 //Show solutions sequentially when clicking NEXT 
 
 const nextSol = () => {
-    console.log(index);
+    //console.log(index);
     // get n and totalSolutions   
     const vars = getSol();
-    console.log(vars[0]);
-    console.log(vars[1].length);
+    //console.log(vars[0]);
+    //console.log(vars[1].length);
     //draw chess board with n queens
     drawBoard(vars[0], vars[1], index);
     if (index < vars[1].length - 1) {
         document.getElementById("status").innerHTML = ` Solution ${index + 1}`;
         index++;
     } else {
-        console.log(index);
+        //console.log(index);
         document.getElementById("status").innerHTML = ` Solution ${index + 1}. You reach the last solution!`;
         index = 0;
     }

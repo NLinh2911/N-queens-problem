@@ -1,6 +1,6 @@
 * {
     box-sizing: border-box;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+   font-family: Verdana, Geneva, Tahoma, sans-serif;
 
 }
 
@@ -12,6 +12,7 @@ body {
 }
 button {
     color: #3F51B5;
+    border-radius: 3px;
 }
 svg {
     border: solid 3px #607D8B;
@@ -27,5 +28,6 @@ svg {
     text-align: center;
 }
 #title {
+    margin: 50px auto;
     text-align: center;
 }
