@@ -1,15 +1,15 @@
 # N-queens-problem
 
 ##TODO:
-1. Solve N queens problem by JavaScript. The whole algorithm is in file nqueens_algorithm.js
+1. Solve N queens problem by JavaScript. The whole algorithm is in file **nqueens_algorithm.js**
 
-2. Display all solutions on a chess board. See index.html (linked js file is nqueens.js)
+2. Display all solutions on a chess board. See **index.html** (linked js file is nqueens.js)
    Solutions are displayed in a chess board drawn by D3js. 
    
    * You can choose the n size between 4 and 10 and click GET to see solutions. 
    * Click NEXT to see different solutions shown sequentially.
   
-3. Animate the algorithm. See animation.html (linked js file is animation.js). You can choose the n size between 4 and 10. Advise to select n size <= 6 since the whole algorithm animated sequentially can be time-consuming. 
+3. Animate the algorithm. See **animation.html** (linked js file is animation.js). You can choose the n size between 4 and 10. Advise to select n size <= 6 since the whole algorithm animated sequentially can be time-consuming. 
 
    * Each step of the algorithm is animated. Click NEXT STEP to see.
    * See the whole algorithm with AUTO RUN.
