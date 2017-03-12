@@ -1,11 +1,8 @@
 /*
+ * Created by Linh Ngo in 12/03/2017
  */
 
 /* Function to check contraints
- * @param: rows : check through all rows from 0 to rows - 1
- * @param: column = j in main function eachRow()
- * @param: solution is an array where index is the row and
- * value at each index is the column where queen is placed in each row
  * @return: True if in column j, no queen is placed from 0 to rows - 1  
  * */
 // each solution is an array
@@ -19,19 +16,15 @@ const meetConstraints = (rows, column, solution) => {
   return true;
 }
 
-/* Draw chess board function
- * @param: n -> set boardDimension
- * @param: randomSol ->
- * */
 const queen = {
   name: "queen",
   w: "\u2655",
   b: "\u265B"
 };
-//Join the random solution array data below to draw queens
+/* Draw chess board function
+ * @param: n -> set boardDimension
+ * */
 const drawBoard = (n) => {
-  //Create a SVG element with d3
-
   ///// Draw
   const boxSize = 50,
     boardDimension = n,
@@ -62,9 +55,7 @@ const drawBoard = (n) => {
     }
   }
 
-  //
   // draw chess pieces 
-
   for (let i = 0; i < boardDimension; i++) {
     for (let j = 0; j < boardDimension; j++) {
       const chess = svg.append("text")
@@ -95,7 +86,7 @@ const drawBoard = (n) => {
   }
 }
 
-drawBoard(4);
+// ANIMATION
 let n = 4;
 const colors = ["#4caf50", "#FF5722", "brown", "black", "#FFC107", "#9C27B0"];
 let countCol = 0;
@@ -107,28 +98,26 @@ let autoAnimation  = "";
 const inputNum = document.getElementById("inputNum");
 const status = document.getElementById("status");
 
-// Function to run each step of the algorithm
+//default
+const init = () => {
+    drawBoard(n);
+}
+init();
+
+/**
+ * ANIMATE EACH STEP OF THE ALGORITHM
+ */
 const nextStep = () => {
-  console.log(newSolutions);
   if (countCol === n) { //finish checking all columns
     if (solIndex === prevSolutions.length - 1) {
-      console.log("end of" + prevSolutions);
       prevSolutions = newSolutions.slice();
       newSolutions = [];
-      console.log(prevSolutions);
-      console.log(countRow);
-      console.log(countCol);
-      console.log(solIndex);
       countRow++;
       countCol = 0;
       solIndex = 0;
       if (countRow === n) {
         status.innerHTML = `There are total  ${prevSolutions.length} solutions. Solutions ${prevSolutions}`
       };
-      console.log("reset");
-      console.log(countRow);
-      console.log(countCol);
-      console.log(solIndex);
       for (let i = 0; i <= countRow; i++) {
         //hide checked boxes
         d3.selectAll(".queens" + i).attr("visibility", "hidden");
@@ -152,11 +141,7 @@ const nextStep = () => {
       d3.selectAll(".queens" + countRow).attr("visibility", "hidden");
       d3.select("#b" + countRow + countCol).attr("visibility", "visible");
       countRow++;
-      //status.innerHTML = `Continue to row ${countRow} `;
-      // console.log(countCol);
-      // console.log(countRow);
       prevSolutions = newSolutions.slice();
-      console.log(prevSolutions);
       newSolutions = [];
     }
 
@@ -167,7 +152,6 @@ const nextStep = () => {
       d3.selectAll(".queens" + i).attr("visibility", "hidden");
     }
     let solution = prevSolutions[solIndex];
-    console.log(solution);
     status.innerHTML = `Check row ${countRow} and column  ${countCol} when queens are placed previously at ${solution}. `;
     for (let i = 0; i < solution.length; i++) {
       let solutionQ = d3.select("#b" + i + solution[i]).text(queen.b).datum(colors[solution[0]]).attr("fill", function(d) {
@@ -177,13 +161,11 @@ const nextStep = () => {
     let selectedQ = d3.select("#b" + countRow + countCol);
     if (meetConstraints(countRow, countCol, solution)) { //meet constraints -> place queens
       // can place a queen at column j 
-      console.log("checked");
       newSolutions.push(solution.concat([countCol]));
       selectedQ.classed("queens" + countRow, true).text(queen.b).datum(colors[solution[0]]).attr("fill", function(d) {
         return d;
       });
       status.innerHTML += `Store accepted solution [${solution.concat([countCol])}]`;
-      console.log(newSolutions);
     } else { //place X
       selectedQ.classed("queens" + countRow, true).text("X").datum(colors[solution[0]]).attr("fill", function(d) {
         return d;
@@ -209,13 +191,17 @@ const nextStep = () => {
     countCol++;
   }
 }
-
+/**
+ * AUTO RUN
+ */
 const autoRun = () => {
   // assign setInterval to a var to use clearInterval to stop animation
   autoAnimation = setInterval(nextStep, 800);
 }
 
-///
+/**
+ * STOP ANIMATION
+ */
 const stopAnimation = () => {
   // stop auto run
   clearInterval(autoAnimation);
@@ -229,13 +215,10 @@ const stopAnimation = () => {
   solIndex = 0;
   newSolutions = [];
   prevSolutions = [];
-  console.log(prevSolutions);
-  console.log(countRow);
-  console.log(countCol);
 }
 
 /**
- * Function called when click GET button to read input value
+ * click GET button to read input value
  */
 const clickGet = () => {
     index = 0;
@@ -244,6 +227,7 @@ const clickGet = () => {
         status.innerHTML = "Please enter a number";
     } else {
         stopAnimation();
-      status.innerHTML = `The chess board size is now ${n}`;
+        status.innerHTML = `The chess board size is now ${n}`;
     }
 }
+
