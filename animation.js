@@ -21,10 +21,11 @@ const queen = {
   w: "\u2655",
   b: "\u265B"
 };
+const indexes = [0, 1, 2, 3];
 /* Draw chess board function
  * @param: n -> set boardDimension
  * */
-const drawBoard = (n) => {
+const drawBoard = (n, totalSolutions, index) => {
   ///// Draw
   const boxSize = 50,
     boardDimension = n,
@@ -35,16 +36,48 @@ const drawBoard = (n) => {
   const div = d3.select("#svg-container");
   // create <svg>
   const svg = div.append("svg")
-    .attr("width", boardSize + "px")
-    .attr("height", boardSize + "px");
-
+    .attr("width", boardSize + boxSize + "px")
+    .attr("height", boardSize + boxSize + "px");
+  labels = indexes.slice();
+  if (n > indexes.length) {
+    for (let i = indexes.length; i < n; i++) {
+      labels.push(i);
+    }
+  }
+    console.log(labels);
+  // top labels 
+  svg.selectAll("colLabel")
+    .data(labels)
+    .enter().append("text")
+    .text(function (d) { return d; })
+    .classed("colLabel", true)
+    .attr("y", 0)
+    .attr("x", function (d, i) { return i * boxSize + boxSize / 2; })
+    .attr("dx", boxSize / 2)
+    .attr("dy", boxSize / 3)
+    .style("font-size", boxSize / 3 + "px")
+    .style("text-anchor", "middle")
+    .style("opacity", 0.8);
+  // left labels 
+  svg.selectAll("rowLabel")
+    .data(labels)
+    .enter().append("text")
+    .text(function (d) { return d; })
+    .classed("rowLabel", true)
+    .attr("y", function (d, i) { return i * boxSize + boxSize / 2; })
+    .attr("x", 0)
+    .attr("dx", boxSize / 4)
+    .attr("dy", boxSize / 2)
+    .style("font-size", boxSize / 3 + "px")
+    .style("text-anchor", "middle")
+    .style("opacity", 0.8);
   // loop through 8 rows and 8 columns to draw the chess board
   for (let i = 0; i < boardDimension; i++) {
     for (let j = 0; j < boardDimension; j++) {
       // draw each chess field
       const box = svg.append("rect")
-        .attr("x", i * boxSize)
-        .attr("y", j * boxSize)
+        .attr("x", i * boxSize + boxSize / 2)
+        .attr("y", j * boxSize + boxSize / 2)
         .attr("width", boxSize + "px")
         .attr("height", boxSize + "px");
       if ((i + j) % 2 === 0) {
@@ -59,14 +92,15 @@ const drawBoard = (n) => {
   for (let i = 0; i < boardDimension; i++) {
     for (let j = 0; j < boardDimension; j++) {
       const chess = svg.append("text")
-        .classed('draggable', true)
+        .classed('chess-pieces', true)
         .attr("id", "b" + j + i)
         .attr("text-anchor", "middle")
-        .attr("x", i * boxSize)
-        .attr("y", j * boxSize)
+        .attr("x", i * boxSize + boxSize / 2)
+        .attr("y", j * boxSize + boxSize / 2)
         .attr("dx", boxSize / 2)
-        .attr("dy", boxSize * 2 / 3)
-        .attr("font-size", '40');
+        .attr("dy", boxSize * 3 / 4)
+        .attr("font-size", '45')
+        .style("text-shadow", "2px 2px 4px #757575");
       chess.attr("X", chess.attr("x"))
         .attr("Y", chess.attr("y"));
       // // Draw pieces
@@ -82,25 +116,30 @@ const drawBoard = (n) => {
       if (j === 3) {
         chess.classed('row3', true);
       }
+      if (j === totalSolutions[index][i]) {
+                chess.attr("id", "b" + i + "1")
+                    .classed('team1', true)
+                    .text(queen.b);
+      }
     }
   }
-}
+}//end of drawBoard
 
 // ANIMATION
 let n = 4;
-const colors = ["#4caf50", "#FF5722", "brown", "black", "#FFC107", "#9C27B0"];
+const colors = ["green", "#FF5722", "brown", "black", "#FFC107", "#9C27B0", "#009688", "#E91E63"];
 let countCol = 0;
 let countRow = 0;
 let solIndex = 0;
 let newSolutions = [];
 let prevSolutions = [];
-let autoAnimation  = "";
+let autoAnimation = "";
 const inputNum = document.getElementById("inputNum");
 const status = document.getElementById("status");
 
 //default
 const init = () => {
-    drawBoard(n);
+  drawBoard(n, [[]], 0);
 }
 init();
 
@@ -116,7 +155,11 @@ const nextStep = () => {
       countCol = 0;
       solIndex = 0;
       if (countRow === n) {
-        status.innerHTML = `There are total  ${prevSolutions.length} solutions. Solutions ${prevSolutions}`
+        status.innerHTML = `There are total  ${prevSolutions.length} solutions. `;
+        for (let i=0; i< prevSolutions.length; i++) {
+          drawBoard(n, prevSolutions,i);
+        }
+        // drawBoard()
       };
       for (let i = 0; i <= countRow; i++) {
         //hide checked boxes
@@ -124,11 +167,6 @@ const nextStep = () => {
       }
     } else {
       if (countRow > 0) { //back track to the next solution of previous row
-        //console.log(countRow);
-        // for (let i = 0; i <= countRow; i++) {
-        //   //hide checked boxes
-        //   d3.selectAll(".queens" + i).attr("visibility", "hidden");
-        // }
         countRow--;
         solIndex++;
         d3.select("#b" + countRow + solIndex).attr("visibility", "visible");
@@ -152,9 +190,9 @@ const nextStep = () => {
       d3.selectAll(".queens" + i).attr("visibility", "hidden");
     }
     let solution = prevSolutions[solIndex];
-    status.innerHTML = `Check row ${countRow} and column  ${countCol} when queens are placed previously at ${solution}. `;
+    status.innerHTML = `Check row ${countRow} and column  ${countCol} when queens are placed previously at [${solution}]. `;
     for (let i = 0; i < solution.length; i++) {
-      let solutionQ = d3.select("#b" + i + solution[i]).text(queen.b).datum(colors[solution[0]]).attr("fill", function(d) {
+      let solutionQ = d3.select("#b" + i + solution[i]).text(queen.b).datum(colors[solution[0]]).attr("fill", function (d) {
         return d;
       }).attr("visibility", "visible");
     }
@@ -162,12 +200,12 @@ const nextStep = () => {
     if (meetConstraints(countRow, countCol, solution)) { //meet constraints -> place queens
       // can place a queen at column j 
       newSolutions.push(solution.concat([countCol]));
-      selectedQ.classed("queens" + countRow, true).text(queen.b).datum(colors[solution[0]]).attr("fill", function(d) {
+      selectedQ.classed("queens" + countRow, true).text(queen.b).datum(colors[solution[0]]).attr("fill", function (d) {
         return d;
       });
       status.innerHTML += `Store accepted solution [${solution.concat([countCol])}]`;
     } else { //place X
-      selectedQ.classed("queens" + countRow, true).text("X").datum(colors[solution[0]]).attr("fill", function(d) {
+      selectedQ.classed("queens" + countRow, true).text("X").datum(colors[solution[0]]).attr("fill", function (d) {
         return d;
       });
     }
@@ -179,7 +217,7 @@ const nextStep = () => {
     let solution = [];
     status.innerHTML = `Check row ${countRow} and column  ${countCol}. `;
     let selectedQ = d3.select("#b" + countRow + countCol);
-    selectedQ.classed("queens" + countRow, true).text(queen.b).datum(colors[countCol]).attr("fill", function(d) {
+    selectedQ.classed("queens" + countRow, true).text(queen.b).datum(colors[countCol]).attr("fill", function (d) {
       return d;
     });
     //store solutions
@@ -196,7 +234,7 @@ const nextStep = () => {
  */
 const autoRun = () => {
   // assign setInterval to a var to use clearInterval to stop animation
-  autoAnimation = setInterval(nextStep, 800);
+  autoAnimation = setInterval(nextStep, 50);
 }
 
 /**
@@ -206,8 +244,8 @@ const stopAnimation = () => {
   // stop auto run
   clearInterval(autoAnimation);
   // clear and draw board again
-  d3.select("svg").remove();
-  drawBoard(n);
+  d3.selectAll("svg").remove();
+  drawBoard(n, [[]], 0);
   status.innerHTML = "You stop the animation";
   // reassign variables to rerun algorithm
   countCol = 0;
@@ -221,13 +259,13 @@ const stopAnimation = () => {
  * click GET button to read input value
  */
 const clickGet = () => {
-    index = 0;
-    n = parseInt(inputNum.value);
-    if (Number.isNaN(n)) {
-        status.innerHTML = "Please enter a number";
-    } else {
-        stopAnimation();
-        status.innerHTML = `The chess board size is now ${n}`;
-    }
+  index = 0;
+  n = parseInt(inputNum.value);
+  if (Number.isNaN(n)) {
+    status.innerHTML = "Please enter a number";
+  } else {
+    stopAnimation();
+    status.innerHTML = `The chess board size is now ${n}`;
+  }
 }
 

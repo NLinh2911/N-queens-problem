@@ -117,12 +117,13 @@ const drawBoard = (n, totalSolutions, index) => {
             // draw chess pieces 
             const chess = svg.append("text")
                 .classed('draggable', true)
-                .style("font-size", boxSize*2/3)
+                .style("font-size", boxSize*3/4)
                 .attr("text-anchor", "middle")
                 .attr("x", i * boxSize)
                 .attr("y", j * boxSize)
                 .attr("dx", boxSize / 2)
-                .attr("dy", boxSize * 2 / 3);
+                .attr("dy", boxSize * 3 / 4)
+                .style("text-shadow", "2px 2px 4px #757575");
 
             // chess.attr("X", chess.attr("x"))
             //   .attr("Y", chess.attr("y"));
