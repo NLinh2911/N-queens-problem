@@ -3,8 +3,7 @@
 ##TODO:
 1. Solve N queens problem by JavaScript. The whole algorithm is in file **nqueens_algorithm.js**
 
-2. Display all solutions on a chess board. See **index.html** (linked js file is nqueens.js)
-   Solutions are displayed in a chess board drawn by D3js. 
+2. Display all solutions on a chess board. See **index.html** (linked js file is nqueens.js). Solutions are displayed in a chess board drawn by D3js. 
    
    * You can choose the n size between 4 and 10 and click GET to see solutions. 
    * Click NEXT to see different solutions shown sequentially.
@@ -25,4 +24,9 @@
 2. Check from the 1st row: all columns are possible ways to place a queen.
 3. Check next rows, compare each column with all placed queens from potential solutions from previous rows. If they don't threaten each other, push the new accepted column into existing solutions.
 4. Continue the process until the last row.
-  
+
+##REFERENCE: check out these links to understand more about the alogrithm
+https://developers.google.com/optimization/puzzles/queens
+http://algorithms.tutorialhorizon.com/backtracking-n-queens-problem-better-solution/
+https://rosettacode.org/wiki/N-queens_problem
+https://d3js.org/

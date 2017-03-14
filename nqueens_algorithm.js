@@ -45,17 +45,13 @@
     	}
 	  }
     if (row === columns - 1) {
-      //console.log(row);
       result = newSolutions;
-      //console.log(result); 
-      
     } else {
       // continue to other rows
       eachRow(row + 1, columns, newSolutions); 
     }
     return result;   
 };
-
 
  /* Runner function
   * @param: n 
@@ -69,4 +65,4 @@
      return totalSolutions;
  }
 
-solve_Nqueens(4);
+console.log(solve_Nqueens(4));

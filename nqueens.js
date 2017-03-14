@@ -130,7 +130,7 @@ const drawBoard = (n, totalSolutions, index) => {
 
             //Draw pieces
             if (j === totalSolutions[index][i]) {
-                chess.attr("id", "b" + i + "1")
+                chess.attr("id", "b" + j + i)
                     .classed('team1', true)
                     .text(queen.b);
             }

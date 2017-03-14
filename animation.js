@@ -22,7 +22,8 @@ const queen = {
   b: "\u265B"
 };
 const indexes = [0, 1, 2, 3];
-/* Draw chess board function
+
+/* DRAW CHESS BOARD FUNCTION
  * @param: n -> set boardDimension
  * */
 const drawBoard = (n, totalSolutions, index) => {
@@ -31,8 +32,7 @@ const drawBoard = (n, totalSolutions, index) => {
     boardDimension = n,
     boardSize = boardDimension * boxSize,
     margin = 100;
-  // Get n queens solutions 
-  // set <body>
+
   const div = d3.select("#svg-container");
   // create <svg>
   const svg = div.append("svg")
@@ -44,7 +44,7 @@ const drawBoard = (n, totalSolutions, index) => {
       labels.push(i);
     }
   }
-    console.log(labels);
+
   // top labels 
   svg.selectAll("colLabel")
     .data(labels)
@@ -117,7 +117,7 @@ const drawBoard = (n, totalSolutions, index) => {
         chess.classed('row3', true);
       }
       if (j === totalSolutions[index][i]) {
-                chess.attr("id", "b" + i + "1")
+                chess.attr("id", "b" + j + i)
                     .classed('team1', true)
                     .text(queen.b);
       }
@@ -136,7 +136,7 @@ let prevSolutions = [];
 let autoAnimation = "";
 const inputNum = document.getElementById("inputNum");
 const status = document.getElementById("status");
-
+let steps = 0;
 //default
 const init = () => {
   drawBoard(n, [[]], 0);
@@ -147,33 +147,39 @@ init();
  * ANIMATE EACH STEP OF THE ALGORITHM
  */
 const nextStep = () => {
-  if (countCol === n) { //finish checking all columns
+  steps ++;
+  //finish checking all columns
+  if (countCol === n) {
+    //finish checking all solutions from previous row   
     if (solIndex === prevSolutions.length - 1) {
       prevSolutions = newSolutions.slice();
       newSolutions = [];
       countRow++;
       countCol = 0;
       solIndex = 0;
-      if (countRow === n) {
-        status.innerHTML = `There are total  ${prevSolutions.length} solutions. `;
+      if (countRow === n) { // finish checking the last row
+        status.innerHTML = `There are total  ${prevSolutions.length} solutions. There are ${steps} steps.`;
+        // draw all solutions in chess board
         for (let i=0; i< prevSolutions.length; i++) {
           drawBoard(n, prevSolutions,i);
         }
-        // drawBoard()
       };
+
+      //hide all <text> in previous rows
       for (let i = 0; i <= countRow; i++) {
-        //hide checked boxes
         d3.selectAll(".queens" + i).attr("visibility", "hidden");
       }
-    } else {
-      if (countRow > 0) { //back track to the next solution of previous row
+    } else { //checking other columns, not at the last column yet
+      if (countRow > 0) { 
+        //move to the next solution of previous row
         countRow--;
         solIndex++;
         d3.select("#b" + countRow + solIndex).attr("visibility", "visible");
         countCol = 0;
         countRow++;
       }
-    }
+    }// end of else
+    
     if (countRow === 0) {
       countCol = 0;
       d3.selectAll(".queens" + countRow).attr("visibility", "hidden");
@@ -182,23 +188,25 @@ const nextStep = () => {
       prevSolutions = newSolutions.slice();
       newSolutions = [];
     }
-
   } // end of checking when countCol === n
+
+  // for all other rows (except the 1st one), with each column, check constraints 
   if (countRow > 0 && countRow < n && countCol <= n) {
+    //hide all <text> in previous rows
     for (let i = 0; i <= countRow; i++) {
-      //hide checked boxes
       d3.selectAll(".queens" + i).attr("visibility", "hidden");
     }
     let solution = prevSolutions[solIndex];
     status.innerHTML = `Check row ${countRow} and column  ${countCol} when queens are placed previously at [${solution}]. `;
+    //display solution
     for (let i = 0; i < solution.length; i++) {
       let solutionQ = d3.select("#b" + i + solution[i]).text(queen.b).datum(colors[solution[0]]).attr("fill", function (d) {
         return d;
       }).attr("visibility", "visible");
     }
+    //select current <text> to check constraints
     let selectedQ = d3.select("#b" + countRow + countCol);
     if (meetConstraints(countRow, countCol, solution)) { //meet constraints -> place queens
-      // can place a queen at column j 
       newSolutions.push(solution.concat([countCol]));
       selectedQ.classed("queens" + countRow, true).text(queen.b).datum(colors[solution[0]]).attr("fill", function (d) {
         return d;
@@ -220,7 +228,7 @@ const nextStep = () => {
     selectedQ.classed("queens" + countRow, true).text(queen.b).datum(colors[countCol]).attr("fill", function (d) {
       return d;
     });
-    //store solutions
+    //check constraints and store solutions
     if (meetConstraints(countRow, countCol, solution)) {
       // can place a queen at column j 
       newSolutions.push(solution.concat([countCol]));
@@ -229,12 +237,13 @@ const nextStep = () => {
     countCol++;
   }
 }
+
 /**
  * AUTO RUN
  */
 const autoRun = () => {
   // assign setInterval to a var to use clearInterval to stop animation
-  autoAnimation = setInterval(nextStep, 50);
+  autoAnimation = setInterval(nextStep, 200);
 }
 
 /**
@@ -259,7 +268,7 @@ const stopAnimation = () => {
  * click GET button to read input value
  */
 const clickGet = () => {
-  index = 0;
+  //index = 0;
   n = parseInt(inputNum.value);
   if (Number.isNaN(n)) {
     status.innerHTML = "Please enter a number";
