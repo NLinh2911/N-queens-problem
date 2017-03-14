@@ -152,36 +152,51 @@ const clearBoard = () => {
 //select DOM
 //const btnGet = document.getElementById("btnGet");
 const inputNum = document.getElementById("inputNum");
-
+const instruction = document.getElementById("instruction");
+const status = document.getElementById("status");
+const title = document.getElementById("title");
 let index = 0; //index to count solutions when showing on chess boards
-/**
+/** 
  * Function called when click GET button
  * Read input value, generate totalSolutions
  */
-const clickGet = () => {
-    index = 0;
-    n = parseInt(inputNum.value);
-    if (Number.isNaN(n)) {
-        document.getElementById("instruction").innerHTML = "Please enter a number";
-    } else {
-        const totalSolutions = solve_Nqueens(n);
-        document.getElementById("title").innerHTML = `Find solutions for ${n} queens problem`
-        document.getElementById("instruction").innerHTML = "Click Next to see solutions";
-        document.getElementById("status").innerHTML = `There are ${totalSolutions.length} solutions.`;
-    }
-}
+// Initially, run clickGet() on clicking GET and each time click next, run getSol() to store solutions for drawing
+// clickGet() and getSol() are redundant due to repeated code, combine into getSol() and when click GET btn, getSol() runs
+// const clickGet = () => {
+//     index = 0;
+//     n = parseInt(inputNum.value);
+//     if (Number.isNaN(n)) {
+//         document.getElementById("instruction").innerHTML = "Please enter a number";
+//     } else {
+//         const totalSolutions = solve_Nqueens(n);
+//         document.getElementById("title").innerHTML = `Find solutions for ${n} queens problem`
+//         document.getElementById("instruction").innerHTML = "Click Next to see solutions";
+//         document.getElementById("status").innerHTML = `There are ${totalSolutions.length} solutions.`;
+//     }
+// }
+/**
+ * Function 
+ */
 const getSol = () => {
     n = parseInt(inputNum.value);
     if (Number.isNaN(n)) {
-        document.getElementById("instruction").innerHTML = "Please enter a number";
+        instruction.innerHTML = "Please enter a number";
+    }
+    else if (n < 4 || n > 10) {
+        instruction.innerHTML = "Please enter a number between 4 and 10";
     } else {
         clearBoard();
         const totalSolutions = solve_Nqueens(n);
+        title.innerHTML = `Find solutions for ${n} queens problem`
+        instruction.innerHTML = "Click Next to see solutions";
+        status.innerHTML = `There are ${totalSolutions.length} solutions.`;
         return [n, totalSolutions];
     }
 }
-//Show solutions sequentially when clicking NEXT 
 
+/**
+ * Show solutions sequentially when clicking NEXT 
+ */
 const nextSol = () => {
     //console.log(index);
     // get n and totalSolutions   
@@ -191,11 +206,11 @@ const nextSol = () => {
     //draw chess board with n queens
     drawBoard(vars[0], vars[1], index);
     if (index < vars[1].length - 1) {
-        document.getElementById("status").innerHTML = ` Solution ${index + 1}`;
+        status.innerHTML = ` Solution ${index + 1}`;
         index++;
     } else {
         //console.log(index);
-        document.getElementById("status").innerHTML = ` Solution ${index + 1}. You reach the last solution!`;
+        status.innerHTML = ` Solution ${index + 1}. You reach the last solution!`;
         index = 0;
     }
 }

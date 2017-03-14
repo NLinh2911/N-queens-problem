@@ -1,6 +1,7 @@
 /*
  * Created by Linh Ngo in 12/03/2017
  */
+// ANIMATE ALGORITHM BY DECONSTRUCTING FOR LOOPS INTO IF-ELSE
 
 /* Function to check contraints
  * @return: True if in column j, no queen is placed from 0 to rows - 1  
@@ -117,9 +118,9 @@ const drawBoard = (n, totalSolutions, index) => {
         chess.classed('row3', true);
       }
       if (j === totalSolutions[index][i]) {
-                chess.attr("id", "b" + j + i)
-                    .classed('team1', true)
-                    .text(queen.b);
+        chess.attr("id", "b" + j + i)
+          .classed('team1', true)
+          .text(queen.b);
       }
     }
   }
@@ -147,7 +148,7 @@ init();
  * ANIMATE EACH STEP OF THE ALGORITHM
  */
 const nextStep = () => {
-  steps ++;
+  steps++;
   //finish checking all columns
   if (countCol === n) {
     //finish checking all solutions from previous row   
@@ -160,8 +161,8 @@ const nextStep = () => {
       if (countRow === n) { // finish checking the last row
         status.innerHTML = `There are total  ${prevSolutions.length} solutions. There are ${steps} steps.`;
         // draw all solutions in chess board
-        for (let i=0; i< prevSolutions.length; i++) {
-          drawBoard(n, prevSolutions,i);
+        for (let i = 0; i < prevSolutions.length; i++) {
+          drawBoard(n, prevSolutions, i);
         }
       };
 
@@ -170,7 +171,7 @@ const nextStep = () => {
         d3.selectAll(".queens" + i).attr("visibility", "hidden");
       }
     } else { //checking other columns, not at the last column yet
-      if (countRow > 0) { 
+      if (countRow > 0) {
         //move to the next solution of previous row
         countRow--;
         solIndex++;
@@ -179,7 +180,7 @@ const nextStep = () => {
         countRow++;
       }
     }// end of else
-    
+
     if (countRow === 0) {
       countCol = 0;
       d3.selectAll(".queens" + countRow).attr("visibility", "hidden");
@@ -243,7 +244,7 @@ const nextStep = () => {
  */
 const autoRun = () => {
   // assign setInterval to a var to use clearInterval to stop animation
-  autoAnimation = setInterval(nextStep, 200);
+  autoAnimation = setInterval(nextStep, 500);
 }
 
 /**
@@ -272,7 +273,11 @@ const clickGet = () => {
   n = parseInt(inputNum.value);
   if (Number.isNaN(n)) {
     status.innerHTML = "Please enter a number";
-  } else {
+  }
+  else if (n < 4 || n > 10) {
+    status.innerHTML = "Please enter a number between 4 and 8";
+  }
+  else {
     stopAnimation();
     status.innerHTML = `The chess board size is now ${n}`;
   }
