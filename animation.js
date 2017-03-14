@@ -244,7 +244,7 @@ const nextStep = () => {
  */
 const autoRun = () => {
   // assign setInterval to a var to use clearInterval to stop animation
-  autoAnimation = setInterval(nextStep, 500);
+  autoAnimation = setInterval(nextStep, 100);
 }
 
 /**
@@ -263,6 +263,7 @@ const stopAnimation = () => {
   solIndex = 0;
   newSolutions = [];
   prevSolutions = [];
+  steps = 0;
 }
 
 /**

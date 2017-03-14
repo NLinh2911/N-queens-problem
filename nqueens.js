@@ -1,7 +1,9 @@
 /*
  * Created by Linh Ngo in 8/3/2017
  */
-
+//==============================
+// N QUEENS ALGORITHM
+//==============================
 /* Function to check constraints
  * @param: rows : check through all rows from 0 to rows - 1
  * @param: column = j in main function eachRow()
@@ -67,8 +69,9 @@ const solve_Nqueens = (n) => {
     //console.log(totalSolutions.length);
     return totalSolutions;
 }
-
-
+//==============================
+// DRAW CHESS BOARD WITH D3
+//==============================
 // Chess pieces data
 const queen = {
     name: "queen",

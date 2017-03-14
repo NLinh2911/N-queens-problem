@@ -40,7 +40,8 @@
         //check if possible to place a queen in column j
         	if (meetContraints(row, j, solution)) {
                 // can place a queen at column j 
-            	newSolutions.push(solution.concat([j]));           
+            	newSolutions.push(solution.concat([j]));
+              //console.log(newSolutions);           
           } 
     	}
 	  }
