@@ -26,7 +26,7 @@
 4. Continue the process until the last row.
 
 ##REFERENCE: check out these links to understand more about the alogrithm
-https://developers.google.com/optimization/puzzles/queens
-http://algorithms.tutorialhorizon.com/backtracking-n-queens-problem-better-solution/
-https://rosettacode.org/wiki/N-queens_problem
-https://d3js.org/
+   * https://developers.google.com/optimization/puzzles/queens
+   * http://algorithms.tutorialhorizon.com/backtracking-n-queens-problem-better-solution/
+   * https://rosettacode.org/wiki/N-queens_problem
+   * https://d3js.org/
