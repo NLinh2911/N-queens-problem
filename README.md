@@ -1,6 +1,6 @@
 # N-queens-problem
 
-##TODO:
+## TODO:
 1. Solve N queens problem by JavaScript. The whole algorithm is in file **nqueens_algorithm.js**
 
 2. Display all solutions on a chess board. See **index.html** (linked js file is nqueens.js). Solutions are displayed in a chess board drawn by D3js. 
@@ -14,7 +14,7 @@
    * See the whole algorithm with AUTO RUN.
    * Stop animation and reset with STOP ANIMATION.
   
-##ALGORITHM EXPLANATION: Check from the 1st row to the last row. In each row, check through all columns.
+## ALGORITHM EXPLANATION: Check from the 1st row to the last row. In each row, check through all columns.
 1. Total solutions is an array of arrays.
 
    * For example, with 4*4 chess board, there are 2 solutions stored as [[1, 3, 0, 2], [2, 0, 3, 1]].
@@ -25,7 +25,7 @@
 3. Check next rows, compare each column with all placed queens from potential solutions from previous rows. If they don't threaten each other, push the new accepted column into existing solutions.
 4. Continue the process until the last row.
 
-##REFERENCE: check out these links to understand more about the alogrithm
+## REFERENCE: check out these links to understand more about the alogrithm
    * https://developers.google.com/optimization/puzzles/queens
    * http://algorithms.tutorialhorizon.com/backtracking-n-queens-problem-better-solution/
    * https://rosettacode.org/wiki/N-queens_problem
